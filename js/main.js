@@ -1,7 +1,12 @@
-var stage, fondo;
+var stage, fondo, grupoAssets;
 var keyboard = {};
 var intervalo;
 var  personaje;
+
+grupoAssets = new Kinetic.Group({
+    x:0,
+    y:0,
+});
 
 stage = new Kinetic.Stage(
     {
@@ -14,6 +19,15 @@ stage = new Kinetic.Stage(
 
 function primerEscenario() {
     fondo = new Kinetic.Layer();
+
+    grupoAssets.add(new Paredes(200, stage.getHeight()-250) );
+    grupoAssets.add(new Paredes(280, stage.getHeight()-600) );
+    grupoAssets.add(new Paredes(390, stage.getHeight()-200) );
+
+    var piso = new Plataforma(0, stage.getHeight()-7);
+    piso.setWidth(stage.getWidth()*2);
+    grupoAssets.add(piso);
+
     personaje = new NaveEspacial();
     personaje.setX(0);
     personaje.setY(490);
@@ -22,6 +36,7 @@ function primerEscenario() {
     personaje.limiteTope = stage.getHeight()-personaje.getHeight();
 
     fondo.add(personaje);
+    fondo.add(grupoAssets);
     stage.add(fondo);
     intervalo = setInterval(frameLoop,1000/60);
 }
@@ -84,12 +99,23 @@ function hit(a,b){
 	}
 	return hit;
 }
+function moverObstaculos() {
+    var obstaculos = grupoAssets.children;
+    for (i in obstaculos){
+        var obstaculo  = obstaculos[i];
+          if(obstaculo instanceof Paredes)
+            obstaculo.mover();
+
+    }
+}
+
 addKeyBoardEvents();
 primerEscenario();
 
 function frameLoop() {
 
     moverPersonaje();
+    moverObstaculos();
     stage.draw();
 
 }
