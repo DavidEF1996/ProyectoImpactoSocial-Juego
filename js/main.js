@@ -2,6 +2,10 @@ var stage, fondo, grupoAssets;
 var keyboard = {};
 var intervalo;
 var  personaje;
+var obstaculo;
+var velox = 7;
+var veloy =7;
+var caracter;
 
 grupoAssets = new Kinetic.Group({
     x:0,
@@ -11,16 +15,27 @@ grupoAssets = new Kinetic.Group({
 stage = new Kinetic.Stage(
     {
         container:'game',
-        width:490,
+        width:980,
         height:560,
 
     }
 );
+var resultado = '';
+			window.onload = function() {
+				document.onkeypress = mostrarInformacionTecla;
+			}
+			function mostrarInformacionTecla(eventoObj){
+				var caracter = String.fromCharCode(eventoObj.which);
 
+			resultado = caracter;
+			console.log(resultado);
+				return resultado;
+
+			}
 function primerEscenario() {
     fondo = new Kinetic.Layer();
 
-    grupoAssets.add(new Paredes(200, stage.getHeight()-250) );
+    grupoAssets.add(new Paredes(200, stage.getHeight()-250));
     grupoAssets.add(new Paredes(280, stage.getHeight()-600) );
     grupoAssets.add(new Paredes(390, stage.getHeight()-200) );
 
@@ -28,7 +43,12 @@ function primerEscenario() {
     piso.setWidth(stage.getWidth()*2);
     grupoAssets.add(piso);
 
-    personaje = new NaveEspacial();
+    var letra = new Plataforma(25, stage.getHeight()-290);
+ //   letra.setWidth(stage.getWidth())
+    grupoAssets.add(letra);
+
+    personaje = new NaveEspacial(velox, veloy);
+    obstaculo = new Paredes(velox, veloy);
     personaje.setX(0);
     personaje.setY(490);
 
@@ -56,7 +76,25 @@ function moverPersonaje(){
         personaje.abajo();
     }
 
+}function moverLetra(){
+
+    if(Keyboard[37]){
+        personaje.retroceder();
+     //   obstaculo.
+    }
+    if(Keyboard[39]){
+        personaje.caminar();
+    }
+    if(Keyboard[38]){
+        personaje.arriba();
+    }
+    if(Keyboard[40]){
+        personaje.abajo();
+    }
+
 }
+
+
 
 function addKeyBoardEvents(){
 
@@ -103,17 +141,52 @@ function moverObstaculos() {
     var obstaculos = grupoAssets.children;
     for (i in obstaculos){
         var obstaculo  = obstaculos[i];
-          if(obstaculo instanceof Paredes)
-            obstaculo.mover();
-
+          if(obstaculo instanceof Paredes) {
+                 obstaculo.mover();
+               //  obstaculo.
+          }
     }
 }
 
+function colisiones() {
+    var paredes = grupoAssets.children;
+    for (i in paredes) {
+        var pared = paredes[i];
+        if (hit(pared, personaje)) {
+            if (pared instanceof Paredes && personaje.getY() <= pared.getY()) {
+
+               //pared.remove();
+                //pared.abajo();
+                pared.arriba();
+
+            } else if (pared instanceof Paredes && personaje.getY() >= pared.getY()){
+                   pared.abajo();
+
+            } else   if (resultado == 'a'&& pared instanceof  Paredes){
+
+                pared.soltar();
+
+
+    }
+            }
+    }
+
+}
+function soltar() {
+       //var resultado = mostrarInformacionTecla();
+
+    //console.log('Llego: ', resultado);
+
+
+
+}
 addKeyBoardEvents();
 primerEscenario();
 
 function frameLoop() {
-
+    //soltar();
+   // mostrarInformacionTecla();
+    colisiones();
     moverPersonaje();
     moverObstaculos();
     stage.draw();

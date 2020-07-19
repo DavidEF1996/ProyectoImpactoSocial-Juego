@@ -1,0 +1,11 @@
+
+			window.onload = function() {
+				document.onkeypress = mostrarInformacionTecla;
+			}
+			function mostrarInformacionTecla(eventoObj){
+				var caracter = String.fromCharCode(eventoObj.which);
+				console.log(caracter);
+				caja.innerHTML = caracter;
+			}
+
+
