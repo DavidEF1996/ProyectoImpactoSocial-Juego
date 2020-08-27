@@ -1,7 +1,7 @@
 function Paredes(x,y) {
     Kinetic.Rect.call(this);
-    this.setWidth(60);
-    this.setHeight(60);
+    this.setWidth(150);
+    this.setHeight(120);
     this.setX(x);
     this.setY(y);
     this.contador = 0;
@@ -16,6 +16,11 @@ function Paredes(x,y) {
         this.contador++;
         this.setY(this.getY()+Math.sin(this.contador * Math.PI/75)*2);
 }
+    this.parar = function(){
+        console.log('llega al metodo soltar')
+        this.contador=0;
+        this.setY(0);
+}
 
      this.caminar = function () {
         this.move(velox,0);
@@ -29,12 +34,13 @@ function Paredes(x,y) {
     this.arriba = function () {
         this.move (0,-(veloy));
         // console.log("Arriba es ",this.getY());
-            if (this.getY()< 0) this.move(0,-this.getY());
+            //if (this.getY()< 0) this.move(0,-this.getY());
 
     }
     this.abajo = function () {
-        this.move(0, veloy);
-            if (this.getY() > this.limiteTope)  this.move(0,-7);
+       this.move(0, veloy);
+           // if (this.getY() > this.limiteTope)  this.move(0,-7);
+            console.log('esta llegando');
 
     }
 

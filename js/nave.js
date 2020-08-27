@@ -25,8 +25,6 @@ function NaveEspacial(velox, veloy) {
 
     this.arriba = function () {
         this.move (0,-(veloy));
-
-         // console.log("Arriba es ",this.getY());
       if (this.getY()< 0) this.move(0,-this.getY());
 
     }
@@ -34,13 +32,7 @@ function NaveEspacial(velox, veloy) {
 
     this.abajo = function () {
         this.move(0, veloy);
-
-
         if (this.getY() > this.limiteTope)  this.move(0,-7);
-
-
-
-
     }
 
     this.saltar = function () {

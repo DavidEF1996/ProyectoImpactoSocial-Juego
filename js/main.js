@@ -150,17 +150,32 @@ function moverObstaculos() {
 
 function colisiones() {
     var paredes = grupoAssets.children;
-    for (i in paredes) {
-        var pared = paredes[i];
+    var contador = 0;
+    //for (i in paredes) {
+        var pared = paredes[0];
         if (hit(pared, personaje)) {
-            if (pared instanceof Paredes && personaje.getY() <= pared.getY()) {
+            //obstaculo.parar();
+            if (pared instanceof Paredes && personaje.getY() > pared.getY()) {
 
-               //pared.remove();
-                //pared.abajo();
+               contador =1;
                 pared.arriba();
+                console.log(contador)
 
-            } else if (pared instanceof Paredes && personaje.getY() >= pared.getY()){
-                   pared.abajo();
+
+            } else if (pared instanceof Paredes && personaje.getY() < pared.getY()){
+                contador = 0;
+                console.log(contador)
+                pared.abajo();
+
+            } else if (pared instanceof Paredes && personaje.getX() > pared.getX() && personaje.getY() < pared.getY() || personaje.getY() > pared.getY() ){
+                contador = 0;
+                console.log(contador)
+                pared.caminar();
+
+            } else if (pared instanceof Paredes && personaje.getX() < pared.getX()){
+                contador = 0;
+                console.log(contador)
+                pared.retroceder();
 
             } else   if (resultado == 'a'&& pared instanceof  Paredes){
 
@@ -169,7 +184,7 @@ function colisiones() {
 
     }
             }
-    }
+    //}
 
 }
 function soltar() {
